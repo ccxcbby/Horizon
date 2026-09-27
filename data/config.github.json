@@ -11,13 +11,21 @@
       "zh",
       "en"
     ],
-    "analysis_concurrency": 5,
+    "analysis_concurrency": 8,
     "enrichment_concurrency": 3
   },
   "processing": {
     "profiles_dir": "profiles",
     "default_profile": "tech-news",
     "profile_settings": {
+      "world-policy": {
+        "threshold": 6.0,
+        "topic_dedup": true
+      },
+      "finance-news": {
+        "threshold": 6.0,
+        "topic_dedup": true
+      },
       "tech-news": {
         "threshold": 6.0,
         "topic_dedup": true
@@ -25,10 +33,6 @@
       "tech-blog": {
         "threshold": 4.0,
         "topic_dedup": false
-      },
-      "finance-news": {
-        "threshold": 6.0,
-        "topic_dedup": true
       },
       "ai-creator": {
         "threshold": 6.0,
@@ -58,59 +62,137 @@
       {
         "type": "user_events",
         "username": "karpathy",
-        "enabled": true,
+        "enabled": false,
         "profile": "tech-news"
       },
       {
         "type": "repo_releases",
         "owner": "vllm-project",
         "repo": "vllm",
-        "enabled": true,
+        "enabled": false,
         "profile": "tech-news"
       },
       {
         "type": "repo_releases",
         "owner": "sgl-project",
         "repo": "sglang",
-        "enabled": true,
+        "enabled": false,
         "profile": "tech-news"
       },
       {
         "type": "repo_releases",
         "owner": "triton-lang",
         "repo": "triton",
-        "enabled": true,
+        "enabled": false,
         "profile": "tech-news"
       }
     ],
     "hackernews": {
       "enabled": true,
       "fetch_top_stories": 30,
-      "min_score": 150,
+      "min_score": 200,
+      "category": "tech-general",
       "profile": "tech-news"
     },
     "rss": [
       {
-        "name": "Simon Willison",
-        "url": "https://simonwillison.net/atom/everything/",
+        "name": "NYT World",
+        "url": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
         "enabled": true,
-        "category": "ai-tools",
-        "profile": "tech-news"
-      },
-      {
-        "name": "vLLM Blog",
-        "url": "https://vllm.ai/blog/rss.xml",
-        "enabled": true,
-        "category": "llm-inference",
-        "profile": "tech-blog",
+        "category": "world-news",
+        "profile": "world-policy",
         "content_extractor": "trafilatura"
       },
       {
-        "name": "Sean Goedecke",
-        "url": "https://www.seangoedecke.com/rss.xml",
+        "name": "NYT Politics",
+        "url": "https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
         "enabled": true,
-        "category": "software-engineering",
-        "profile": "tech-blog",
+        "category": "us-politics",
+        "profile": "world-policy",
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "NPR Politics",
+        "url": "https://feeds.npr.org/1014/rss.xml",
+        "enabled": true,
+        "category": "us-politics",
+        "profile": "world-policy"
+      },
+      {
+        "name": "Al Jazeera",
+        "url": "https://www.aljazeera.com/xml/rss/all.xml",
+        "enabled": true,
+        "category": "world-news",
+        "profile": "world-policy",
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "Foreign Policy",
+        "url": "https://foreignpolicy.com/feed/",
+        "enabled": true,
+        "category": "geopolitics",
+        "profile": "world-policy",
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "BBC World",
+        "url": "https://feeds.bbci.co.uk/news/world/rss.xml",
+        "enabled": true,
+        "category": "world-news",
+        "profile": "world-policy",
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "The Guardian Society",
+        "url": "https://www.theguardian.com/society/rss",
+        "enabled": true,
+        "category": "society",
+        "profile": "world-policy",
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "纽约时报中文网",
+        "url": "https://cn.nytimes.com/rss/",
+        "enabled": true,
+        "category": "cn-world",
+        "profile": "world-policy"
+      },
+      {
+        "name": "Google News 俄乌与东欧",
+        "url": "https://news.google.com/rss/search?q=Russia+Ukraine+OR+sanctions+OR+ceasefire&hl=en-US&gl=US&ceid=US:en",
+        "enabled": true,
+        "category": "russia-ukraine",
+        "profile": "world-policy"
+      },
+      {
+        "name": "华尔街见闻",
+        "url": "https://dedicated.wallstreetcn.com/rss.xml",
+        "enabled": true,
+        "category": "cn-finance",
+        "profile": "finance-news"
+      },
+      {
+        "name": "MarketWatch Top Stories",
+        "url": "https://feeds.content.dowjones.io/public/rss/mw_topstories",
+        "enabled": true,
+        "category": "finance",
+        "profile": "finance-news",
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "The Economist: Finance & Economics",
+        "url": "https://www.economist.com/finance-and-economics/rss.xml",
+        "enabled": true,
+        "category": "finance",
+        "profile": "finance-news",
+        "content_extractor": "trafilatura"
+      },
+      {
+        "name": "The Economist: The World This Week",
+        "url": "https://www.economist.com/the-world-this-week/rss.xml",
+        "enabled": true,
+        "category": "world-news",
+        "profile": "world-policy",
         "content_extractor": "trafilatura"
       },
       {
@@ -122,17 +204,38 @@
         "content_extractor": "trafilatura"
       },
       {
-        "name": "GitHub Trending - Daily",
-        "url": "https://mshibanami.github.io/GitHubTrendingRSS/daily/all.xml",
+        "name": "Simon Willison",
+        "url": "https://simonwillison.net/atom/everything/",
         "enabled": true,
-        "category": "github-trending",
+        "category": "ai-tools",
         "profile": "tech-news"
+      },
+      {
+        "name": "vLLM Blog",
+        "url": "https://vllm.ai/blog/rss.xml",
+        "enabled": false,
+        "category": "llm-inference",
+        "profile": "tech-blog"
+      },
+      {
+        "name": "Sean Goedecke",
+        "url": "https://www.seangoedecke.com/rss.xml",
+        "enabled": false,
+        "category": "software-engineering",
+        "profile": "tech-blog"
       },
       {
         "name": "Semianalysis",
         "url": "https://newsletter.semianalysis.com/feed",
-        "enabled": true,
+        "enabled": false,
         "category": "semiconductors",
+        "profile": "tech-news"
+      },
+      {
+        "name": "GitHub Trending - Daily",
+        "url": "https://mshibanami.github.io/GitHubTrendingRSS/daily/all.xml",
+        "enabled": false,
+        "category": "github-trending",
         "profile": "tech-news"
       },
       {
@@ -144,11 +247,11 @@
       }
     ],
     "reddit": {
-      "enabled": true,
+      "enabled": false,
       "subreddits": [
         {
           "subreddit": "MachineLearning",
-          "enabled": true,
+          "enabled": false,
           "sort": "hot",
           "time_filter": "day",
           "fetch_limit": 10,
@@ -157,7 +260,7 @@
         },
         {
           "subreddit": "LocalLLaMA",
-          "enabled": true,
+          "enabled": false,
           "sort": "hot",
           "time_filter": "day",
           "fetch_limit": 10,
@@ -166,7 +269,7 @@
         }
       ],
       "users": [],
-      "fetch_comments": 10
+      "fetch_comments": 5
     },
     "twitter": {
       "enabled": false,
@@ -191,11 +294,11 @@
       "profile": "tech-news"
     },
     "telegram": {
-      "enabled": true,
+      "enabled": false,
       "channels": [
         {
           "channel": "zaihuapd",
-          "enabled": true,
+          "enabled": false,
           "fetch_limit": 20,
           "profile": [
             "tech-news",
@@ -206,20 +309,20 @@
     },
     "gdelt": {
       "enabled": false,
-      "query": "artificial intelligence",
+      "query": "social policy reform",
       "mode": "ArtList",
       "max_records": 75,
-      "category": "news",
-      "profile": "tech-news"
+      "category": "world-news",
+      "profile": "world-policy"
     },
     "google_news": {
       "enabled": false,
-      "query": "artificial intelligence",
+      "query": "social policy",
       "language": "en",
       "country": "US",
-      "max_results": 100,
-      "category": "news",
-      "profile": "tech-news"
+      "max_results": 50,
+      "category": "world-news",
+      "profile": "world-policy"
     }
   },
   "collection": {
@@ -228,13 +331,49 @@
   "digest": {
     "max_items": 20,
     "profile_order": [
+      "world-policy",
+      "finance-news",
       "tech-news",
-      "tech-blog",
-      "finance-news"
+      "tech-blog"
     ],
-    "category_groups": {},
+    "category_groups": {
+      "policy": {
+        "name": "国际 / 政治 / 社会政策",
+        "limit": 7,
+        "categories": [
+          "world-news",
+          "us-politics",
+          "uk-politics",
+          "geopolitics",
+          "society",
+          "russia-ukraine",
+          "cn-world"
+        ]
+      },
+      "finance": {
+        "name": "财经",
+        "limit": 7,
+        "categories": [
+          "finance",
+          "cn-finance",
+          "equities"
+        ]
+      },
+      "tech": {
+        "name": "科技",
+        "limit": 4,
+        "categories": [
+          "tech-general",
+          "ai-tools",
+          "github-trending",
+          "semiconductors",
+          "llm-inference",
+          "software-engineering"
+        ]
+      }
+    },
     "default_group": "other",
-    "default_group_limit": null
+    "default_group_limit": 2
   },
   "webhook": {
     "enabled": false,
