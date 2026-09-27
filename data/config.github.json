@@ -8,8 +8,7 @@
     "max_tokens": 8192,
     "throttle_sec": 0,
     "languages": [
-      "zh",
-      "en"
+      "zh"
     ],
     "analysis_concurrency": 8,
     "enrichment_concurrency": 3
@@ -100,16 +99,14 @@
         "url": "https://rss.nytimes.com/services/xml/rss/nyt/World.xml",
         "enabled": true,
         "category": "world-news",
-        "profile": "world-policy",
-        "content_extractor": "trafilatura"
+        "profile": "world-policy"
       },
       {
         "name": "NYT Politics",
         "url": "https://rss.nytimes.com/services/xml/rss/nyt/Politics.xml",
         "enabled": true,
         "category": "us-politics",
-        "profile": "world-policy",
-        "content_extractor": "trafilatura"
+        "profile": "world-policy"
       },
       {
         "name": "NPR Politics",

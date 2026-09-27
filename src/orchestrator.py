@@ -307,6 +307,20 @@ class HorizonOrchestrator:
                 )
                 summary = await summarizer.generate_summary(important_items, today, len(all_items), language=lang)
 
+                # 7b. Append a cross-cutting "situation overview" (local extension).
+                # Never fatal: on any failure the digest is saved unchanged.
+                from .ai.overview import append_situation_overview
+
+                summary = await append_situation_overview(
+                    summary,
+                    important_items,
+                    language=lang,
+                    date=today,
+                    profile_names=self.profiles.names,
+                    ai_config=self.config.ai,
+                    console=self.console,
+                )
+
                 # Save to data/summaries/
                 summary_path = self.storage.save_daily_summary(today, summary, language=lang)
                 self.console.print(
