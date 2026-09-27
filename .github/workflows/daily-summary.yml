@@ -2,16 +2,17 @@ name: Daily Horizon Summary
 
 on:
   schedule:
-    # GitHub scheduled workflows use UTC. 20:00 UTC is 04:00 Asia/Shanghai;
-    # this intentionally runs early to offset the observed schedule delay.
-    - cron: '0 23 * * *'
-  workflow_dispatch:      # Allow manual trigger
+    # GitHub 的 cron 一律按 UTC 解释。
+    # 19:00 UTC = 22:00 莫斯科（UTC+3）= 03:00 北京（UTC+8）。
+    # 这个点同时落在 DeepSeek 的错峰半价时段（北京 00:30-08:30）内。
+    - cron: '0 19 * * *'
+  workflow_dispatch:      # 允许手动触发
 
 jobs:
   daily-summary:
     runs-on: ubuntu-latest
     permissions:
-      contents: write  # Needed to commit changes
+      contents: write  # 需要写权限才能把简报推到 gh-pages 分支
 
     steps:
       - name: Checkout code
@@ -35,13 +36,9 @@ jobs:
 
       - name: Run Horizon
         env:
-          # Map secrets to environment variables expected by config.json
-          # Modify these based on your data/config.github.json provider settings
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
-          LWN_KEY: ${{ secrets.LWN_KEY }}
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          # 可选：把默认 GITHUB_TOKEN 给 Horizon 用，GitHub 源的速率上限 60/小时 -> 5000/小时
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HORIZON_WEBHOOK_URL: ${{ secrets.HORIZON_WEBHOOK_URL }}
         run: uv run horizon --hours 24
 
@@ -53,7 +50,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./docs
-          keep_files: true  # Keep existing summaries on gh-pages branch
+          keep_files: true  # 保留历史简报
           commit_message: "📝 Daily Summary: ${{ env.DATE }}"
           publish_branch: gh-pages
           enable_jekyll: true
