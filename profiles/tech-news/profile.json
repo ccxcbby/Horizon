@@ -26,16 +26,12 @@
       {
         "id": "impact",
         "type": "section",
-        "tools": [
-          "web_search"
-        ]
+        "tools": []
       },
       {
         "id": "business_angle",
         "type": "section",
-        "tools": [
-          "web_search"
-        ],
+        "tools": [],
         "optional": true
       },
       {
@@ -45,5 +41,10 @@
         "optional": true
       }
     ]
+  },
+  "content": {
+    "analysis_max_chars": 1500,
+    "enrichment_max_chars": 5000,
+    "sampling": "prefix"
   }
 }

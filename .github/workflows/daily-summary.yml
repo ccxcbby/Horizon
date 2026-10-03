@@ -1,12 +1,10 @@
 name: Daily Horizon Summary
 
 on:
-  schedule:
-    # GitHub 的 cron 一律按 UTC 解释。
-    # 19:00 UTC = 22:00 莫斯科（UTC+3）= 03:00 北京（UTC+8）。
-    # 这个点同时落在 DeepSeek 的错峰半价时段（北京 00:30-08:30）内。
-    - cron: '0 19 * * *'
-  workflow_dispatch:      # 允许手动触发
+  # ⏸ 每日定时已暂停（省 API 费用）。恢复：去掉下面两行前面的 "# " 并 push 即可。
+  # schedule:
+  #   - cron: '0 19 * * *'   # 19:00 UTC = 22:00 莫斯科 = 03:00 北京
+  workflow_dispatch:      # 手动触发保留可用
 
 jobs:
   daily-summary:
@@ -37,6 +35,8 @@ jobs:
       - name: Run Horizon
         env:
           DEEPSEEK_API_KEY: ${{ secrets.DEEPSEEK_API_KEY }}
+          # 关掉 DeepSeek 思考模式（推理 token 也按输出计费，实测占输出 77%）
+          HORIZON_DISABLE_THINKING: "1"
           # 可选：把默认 GITHUB_TOKEN 给 Horizon 用，GitHub 源的速率上限 60/小时 -> 5000/小时
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           HORIZON_WEBHOOK_URL: ${{ secrets.HORIZON_WEBHOOK_URL }}

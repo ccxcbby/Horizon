@@ -7,8 +7,8 @@
   "match": "match.md",
   "analysis": "analysis.md",
   "content": {
-    "analysis_max_chars": 4000,
-    "enrichment_max_chars": 8000,
+    "analysis_max_chars": 2500,
+    "enrichment_max_chars": 5000,
     "sampling": "prefix"
   },
   "enrichment": {
@@ -30,16 +30,12 @@
       {
         "id": "impact",
         "type": "section",
-        "tools": [
-          "web_search"
-        ]
+        "tools": []
       },
       {
         "id": "business_angle",
         "type": "section",
-        "tools": [
-          "web_search"
-        ],
+        "tools": [],
         "optional": true
       }
     ]
